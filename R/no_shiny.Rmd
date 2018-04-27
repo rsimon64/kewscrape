@@ -1,0 +1,21 @@
+---
+title: "R Notebook"
+output: html_document
+---
+
+
+
+```{r}
+library(crosstalk)
+library(ggplot2)
+library(plotly)
+
+sd <- SharedData$new(txhousing, ~year)
+p <- ggplot(sd, aes(month, median)) +
+  geom_line(aes(group = year)) + 
+  geom_smooth(data = txhousing, method = "gam") + 
+  facet_wrap(~ city)
+
+ggplotly(p, tooltip = "year") %>%
+  highlight(defaultValues = 2015, color = "red")
+```
